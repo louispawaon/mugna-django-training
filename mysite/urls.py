@@ -16,7 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from exercises.views import math_view, valid_date_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("math/<int:num1>/<int:num2>/",math_view),
+    path('math/<int:num1>/<int:num2>/<int:num3>/', math_view),
+    path('valid-date/<int:YYYY>/<int:MM>/<int:DD>/', valid_date_view)
 ]
