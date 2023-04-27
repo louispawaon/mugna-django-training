@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "mugna-django-training"
+version = "0.1.0"
+description = "mugna django backend training"
+authors = ["louispawaon <lpawaon@gmail.com>"]
+readme = "README.md"
+packages = [{include = "mugna_django_training"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^4.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
