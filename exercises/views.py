@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from datetime import datetime
 
 # Create your views here.
 def math_view(request, num1, num2, num3=None):
@@ -21,7 +22,6 @@ def math_view(request, num1, num2, num3=None):
 def valid_date_view(request, YYYY, MM, DD):
     try:
         # Try to create a date object with the provided parameters
-        from datetime import datetime
         datetime(int(YYYY), int(MM), int(DD))
         response = "Valid date"
     except ValueError:
