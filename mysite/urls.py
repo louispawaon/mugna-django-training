@@ -17,10 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from exercises.views import math_view, valid_date_view
+from exercises.views import book_list, book_detail, classification_detail, classification_list, author_detail, author_list
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("math/<int:num1>/<int:num2>/",math_view),
     path('math/<int:num1>/<int:num2>/<int:num3>/', math_view),
-    path('valid-date/<int:YYYY>/<int:MM>/<int:DD>/', valid_date_view)
+    path('valid-date/<int:YYYY>/<int:MM>/<int:DD>/', valid_date_view),
+    path('books/', book_list, name='book_list'),
+    path('books/<int:book_id>/', book_detail, name='book_detail'),
+     path('authors/', author_list, name='author_list'),
+    path('authors/<int:author_id>/', author_detail, name='author_detail'),
+    path('classification/', classification_list, name='classification_list'),
+    path('classification/<int:classification_id>/', classification_detail, name='classification_detail')
 ]

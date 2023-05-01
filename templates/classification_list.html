@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Classification List</h1>
+
+<ul>
+{% for classification in classifications %}
+  <li>{{ classification.name }}</li>
+{% empty %}
+  <li>No classifications found.</li>
+{% endfor %}
+</ul>
+
+{% endblock %}
