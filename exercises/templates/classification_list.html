@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
 
+{% block title %}Classification List{% endblock %}
+
 {% block content %}
 <h1>Classification List</h1>
 
 <ul>
 {% for classification in classifications %}
-  <li>{{ classification.name }}</li>
+  <li><a href="{% url 'classification_detail' classification_id=classification.id %}">{{ classification.name }}</a></li>
 {% empty %}
   <li>No classifications found.</li>
 {% endfor %}
