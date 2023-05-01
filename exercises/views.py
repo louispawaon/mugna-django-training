@@ -8,17 +8,17 @@ def math_view(request, num1, num2, num3=None):
     # Parse the parameters as integers
     try:
         numbers = [int(num1), int(num2)]
-        if num3:
+        if num3 is not None:
             numbers.append(int(num3))
+            total_sum = sum(numbers)
+            difference = numbers[0] - numbers[1] - numbers[2]
+            product = numbers[0] * numbers[1] * numbers [2]
+            quotient = (numbers[0] / numbers[1])/numbers[2]
         else:
-            numbers.append(0)
-
-        # Compute the results
-        total_sum = sum(numbers)
-        difference = numbers[0] - numbers[1] - numbers[2]
-        product = numbers[0] * numbers[1] * numbers [2]
-        quotient = (numbers[0] / numbers[1])/numbers[2]
-
+            total_sum = sum(numbers)
+            difference = numbers[0] - numbers[1]
+            product = numbers[0] * numbers[1]
+            quotient = numbers[0] / numbers[1]
     except Exception:
         raise ValueError
 
@@ -38,7 +38,7 @@ def valid_date_view(request, YYYY, MM, DD):
         datetime(int(YYYY), int(MM), int(DD))
         response = "Valid date"
     except ValueError:
-        
+
         response = "Invalid date"
 
     context = {
