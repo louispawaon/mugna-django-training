@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>{{ book.title }}</h1>
-
-<p>Author: <a href="{% url 'author_detail' book.author.id %}">{{ book.author.name }}</a></p>
-<p>Classification: {{ book.classification.name }}</p>
-
+  <h1>{{ book.title }}</h1>
+  <p>Author(s): {{ book.authors.all|join:", " }}</p>
+  <p>Publisher: {{ book.publisher }}</p>
+  <p>Publication date: {{ book.publication_date }}</p>
+  <h3>Classification</h3>
+  <ul>
+    {% for classification in book.classification_set.all %}
+      <li><a href="{% url 'classification_detail' classification.id %}">{{ classification.name }}</a></li>
+    {% endfor %}
+  </ul>
 {% endblock %}

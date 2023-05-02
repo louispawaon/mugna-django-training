@@ -22,7 +22,6 @@ class Classification (models.Model):
     code = models.CharField(max_length=3)
     name = models.CharField(max_length=50)
     description = models.TextField()
-    #book = models.OneToOneField('exercises.Book', on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name

@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Publishers</h1>
+  <ul>
+    {% for publisher in publishers %}
+      <li>
+        <a href="{% url 'publisher_detail' publisher.id %}">{{ publisher.name }}</a>
+      </li>
+    {% empty %}
+      <li>No publishers found.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

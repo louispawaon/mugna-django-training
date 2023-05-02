@@ -6,7 +6,7 @@
   <h1>List of Authors</h1>
   <ul>
     {% for author in authors %}
-      <li><a href="{% url 'author_detail' author.id %}">{{ author.name }}</a></li>
+      <li><a href="{% url 'author_detail' author.id %}">{{ author}}</a></li>
     {% empty %}
       <li>No authors to display.</li>
     {% endfor %}

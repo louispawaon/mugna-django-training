@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>{{ publisher.name }}</h1>
+  <p><strong>Address:</strong> {{ publisher.address }}, {{ publisher.city }}, {{ publisher.state_province }}, {{ publisher.country }}</p>
+  <p><strong>Website:</strong> <a href="{{ publisher.website }}">{{ publisher.website }}</a></p>
+  <h2>Books Published</h2>
+  <ul>
+    {% for book in publisher.book_set.all %}
+      <li>
+        <a href="{% url 'book_detail' book.id %}">{{ book.title }}</a> by
+        {% for author in book.authors.all %}
+          {{ author }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      </li>
+    {% empty %}
+      <li>No books published by this publisher.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
