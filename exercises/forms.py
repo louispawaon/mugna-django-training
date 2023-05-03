@@ -1,4 +1,6 @@
 from django.forms import ModelForm
+from django import forms
+from django.contrib.auth.forms import AuthenticationForm
 from exercises.models import Book, Publisher
 
 class PublisherForm(ModelForm):
@@ -10,3 +12,8 @@ class BookForm(ModelForm):
     class Meta:
         model=Book
         fields="__all__"
+
+class RegistrationForm(forms.Form):
+    username = forms.CharField(max_length=100)
+    email = forms.EmailField()
+    password = forms.CharField(widget=forms.PasswordInput())

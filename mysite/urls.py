@@ -15,11 +15,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.views.generic.base import TemplateView
 from exercises.views import math_view, valid_date_view
 from exercises.views import (book_list, book_detail, classification_detail, classification_list, author_detail, author_list, 
                              publisher_detail, publisher_list, author_search, publisher_search, book_form, publisher_form,
-                              publisher_update, book_update, publisher_delete, book_delete )
+                              publisher_update, book_update, publisher_delete, book_delete, register)
 
 
 urlpatterns = [
@@ -42,5 +43,8 @@ urlpatterns = [
     path('publishers/update/<int:pk>/', publisher_update, name='publisher_update'),
     path('books/update/<int:pk>/', book_update, name='book_update'),
     path('publishers/delete/<int:pk>/', publisher_delete, name='publisher_delete'),
-    path('books/delete/<int:pk>/', book_delete, name='book_delete')
+    path('books/delete/<int:pk>/', book_delete, name='book_delete'),
+    path('register/', register, name='register'),
+    path('accounts/', include("django.contrib.auth.urls")),
+    path('',TemplateView.as_view(template_name="home.html"), name='home')#change nako later
 ]
