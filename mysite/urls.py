@@ -17,7 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from exercises.views import math_view, valid_date_view
-from exercises.views import book_list, book_detail, classification_detail, classification_list, author_detail, author_list, publisher_detail, publisher_list
+from exercises.views import (book_list, book_detail, classification_detail, classification_list, author_detail, author_list, 
+                             publisher_detail, publisher_list, author_search, publisher_search, book_form, publisher_form,
+                              publisher_update, book_update, publisher_delete, book_delete )
 
 
 urlpatterns = [
@@ -32,6 +34,13 @@ urlpatterns = [
     path('classification/', classification_list, name='classification_list'),
     path('classification/<int:classification_id>/', classification_detail, name='classification_detail'),
     path('publishers/', publisher_list, name='publisher_list'),
-    path('publishers/<int:publisher_id>/', publisher_detail, name='publisher_detail')
-
+    path('publishers/<int:publisher_id>/', publisher_detail, name='publisher_detail'),
+    path('authors/search/', author_search, name="author_search"),
+    path('publishers/search/', publisher_search, name="publisher_search"),
+    path('books/add/', book_form, name='book_form'),
+    path('publishers/add/', publisher_form, name='publisher_form'),
+    path('publishers/update/<int:pk>/', publisher_update, name='publisher_update'),
+    path('books/update/<int:pk>/', book_update, name='book_update'),
+    path('publishers/delete/<int:pk>/', publisher_delete, name='publisher_delete'),
+    path('books/delete/<int:pk>/', book_delete, name='book_delete')
 ]

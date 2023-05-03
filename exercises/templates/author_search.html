@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Search Authors</h1>
+    {% if error %}
+        <p>Please submit an appropriate search term.</p>
+    {% endif %}
+    <form method="GET" action="{% url 'author_search' %}">
+        <input type="text" name="q" value="{{ request.GET.q }}">
+        <button type="submit"value='Search'>Search</button>
+    </form>
+    {% if request.GET.q %}
+        <h2>Results:</h2>
+        <ul>
+            {% for author in authors %}
+                <li><a href="{% url 'author_detail' author.id %}">{{ author }}</a></li>
+            {% endfor %}
+        </ul>
+    {% elif request.GET.q %}
+        <p>No authors found.</p>
+    {% endif %}
+{% endblock %}
