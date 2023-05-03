@@ -2,8 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from datetime import datetime
 from django.db.models import Q
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from exercises.models import Classification, Book, Author, Publisher
 from exercises.forms import PublisherForm, BookForm, RegistrationForm
@@ -198,5 +197,5 @@ def register(request):
     return render(request, "register.html", {"form": form})
 
 def home(request):
-    return(render, "home.html")
+    return render( request, "home.html")
         
