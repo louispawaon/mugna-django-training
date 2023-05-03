@@ -20,15 +20,18 @@ from django.views.generic.base import TemplateView
 from exercises.views import math_view, valid_date_view
 from exercises.views import (book_list, book_detail, classification_detail, classification_list, author_detail, author_list, 
                              publisher_detail, publisher_list, author_search, publisher_search, book_form, publisher_form,
-                              publisher_update, book_update, publisher_delete, book_delete, register, home)
+                              publisher_update, book_update, publisher_delete, book_delete, register, home, user_logout,
+                              author_delete, author_form, author_update)
 
 
 urlpatterns = [
     path('', home, name='home'),
     path("admin/", admin.site.urls),
+
     path("math/<int:num1>/<int:num2>/",math_view),
     path('math/<int:num1>/<int:num2>/<int:num3>/', math_view),
     path('valid-date/<int:YYYY>/<int:MM>/<int:DD>/', valid_date_view),
+
     path('books/', book_list, name='book_list'),
     path('books/<int:book_id>/', book_detail, name='book_detail'),
     path('authors/', author_list, name='author_list'),
@@ -37,6 +40,7 @@ urlpatterns = [
     path('classification/<int:classification_id>/', classification_detail, name='classification_detail'),
     path('publishers/', publisher_list, name='publisher_list'),
     path('publishers/<int:publisher_id>/', publisher_detail, name='publisher_detail'),
+
     path('authors/search/', author_search, name="author_search"),
     path('publishers/search/', publisher_search, name="publisher_search"),
     path('books/add/', book_form, name='book_form'),
@@ -45,6 +49,13 @@ urlpatterns = [
     path('books/update/<int:pk>/', book_update, name='book_update'),
     path('publishers/delete/<int:pk>/', publisher_delete, name='publisher_delete'),
     path('books/delete/<int:pk>/', book_delete, name='book_delete'),
+
     path('register/', register, name='register'),
-    path('accounts/', include("django.contrib.auth.urls"))
+    path('accounts/', include("django.contrib.auth.urls")),
+    path('user_logout/', user_logout, name='user_logout'),
+
+    path('authors/add/', author_form, name="author_form"),
+    path('authors/update/<int:pk>/', author_update, name="author_update"),
+    path('authors/delete/<int:pk>/', author_delete, name="author_delete")
+    
 ]

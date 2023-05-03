@@ -4,11 +4,16 @@ from datetime import datetime
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
+from django.contrib.auth import logout
 from exercises.models import Classification, Book, Author, Publisher
-from exercises.forms import PublisherForm, BookForm, RegistrationForm
+from exercises.forms import PublisherForm, BookForm, RegistrationForm, AuthorForm
 
 def is_admin(user):
     return user.is_superuser
+
+def user_logout(request):
+    logout(request)
+    return render(request, 'user_logout.html')
 
 # Create your views here.
 def math_view(request, num1, num2, num3=None):
@@ -160,7 +165,7 @@ def book_update(request, pk=None):
     book = get_object_or_404(Book, pk=pk)
     form = BookForm(instance=book)
     if request.method == "POST":
-        form = PublisherForm(request.POST, instance=book)
+        form = BookForm(request.POST, instance=book)
         if form.is_valid():
             form.save()
             return render(request, "crud_results.html", {"results": Book.objects.all()})
@@ -198,4 +203,31 @@ def register(request):
 
 def home(request):
     return render( request, "home.html")
+
+# Exercise 8
+
+def author_form(request):
+    form = AuthorForm()
+    if request.method == "POST":
+        form = AuthorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return render(request, "crud_results.html", {"results": Author.objects.all()})
+    return render(request, "author_form.html", {"form": form, "obj": "Author"})
         
+def author_update(request, pk=None):
+    author = get_object_or_404(Author, pk=pk)
+    form = AuthorForm(instance=author)
+    if request.method == "POST":
+        form = AuthorForm(request.POST, instance=author)
+        if form.is_valid():
+            form.save()
+            return render(request, "crud_results.html", {"results": Author.objects.all()})
+    return render(request, "author_update.html", {"form": form, "obj": "Author"})
+
+def author_delete(request, pk=None):
+    author = get_object_or_404(Author, pk=pk)
+    if request.method == "POST":
+        author.delete()
+        return render(request, "crud_results.html", {"results": Author.objects.all()})
+    return render(request, "author_delete.html", {"obj": "Author"})

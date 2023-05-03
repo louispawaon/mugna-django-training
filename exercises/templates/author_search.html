@@ -9,14 +9,14 @@
         <input type="text" name="q" value="{{ request.GET.q }}">
         <button type="submit"value='Search'>Search</button>
     </form>
-    {% if request.GET.q %}
+    {% if authors %}
         <h2>Results:</h2>
         <ul>
             {% for author in authors %}
                 <li><a href="{% url 'author_detail' author.id %}">{{ author }}</a></li>
             {% endfor %}
         </ul>
-    {% elif request.GET.q %}
+    {% else %}
         <p>No authors found.</p>
     {% endif %}
 {% endblock %}
