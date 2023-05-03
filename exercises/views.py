@@ -196,4 +196,7 @@ def register(request):
         form = RegistrationForm()
     
     return render(request, "register.html", {"form": form})
+
+def home(request):
+    return(render, "home.html")
         
