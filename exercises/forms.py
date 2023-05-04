@@ -1,6 +1,5 @@
 from django.forms import ModelForm
 from django import forms
-from django.contrib.auth.forms import AuthenticationForm
 from exercises.models import Book, Publisher, Author
 
 class PublisherForm(ModelForm):

@@ -4,22 +4,26 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <title>{% block title %} {% endblock %}</title>
 </head>
 <body>
-    <nav>
-        <ul>
-          <li><a href="{% url 'book_list' %}">Book List</a></li>
-          <li><a href="{% url 'classification_list' %}">Classification List</a></li>
-          <li><a href="{% url 'author_list' %}">Author List</a></li>
-          <li><a href="{% url 'publisher_list' %}">Publisher List</a></li>
-          <li><a href="{% url 'author_search' %}">Search Author</a></li>
-          <li><a href="{% url 'publisher_search' %}">Search Publisher</a></li>
-          <li><a href="{% url 'book_form' %}">Book Form</a></li>
-          <li><a href="{% url 'publisher_form' %}">Publisher Form</a></li>
-          <li><a href="{% url 'register' %}">Register User</a></li>
-        </ul>
-    </nav>
+    <div>
+        <nav class="navbar">  
+            <ul>
+            <li><a href="{% url 'book_list' %}">Book List</a></li>
+            <li><a href="{% url 'classification_list' %}">Classification List</a></li>
+            <li><a href="{% url 'author_list' %}">Author List</a></li>
+            <li><a href="{% url 'publisher_list' %}">Publisher List</a></li>
+            <li><a href="{% url 'author_search' %}">Search Author</a></li>
+            <li><a href="{% url 'publisher_search' %}">Search Publisher</a></li>
+            <li><a href="{% url 'book_form' %}">Book Form</a></li>
+            <li><a href="{% url 'publisher_form' %}">Publisher Form</a></li>
+            <li><a href="{% url 'register' %}">Register User</a></li>
+            </ul>
+        </nav>
+    </div>
     <main>
         {% block content %}
         {% endblock %}
