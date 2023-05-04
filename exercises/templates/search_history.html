@@ -1,10 +1,14 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
-    <h2>Search History</h2>
+  <h1>Search History</h1>
+  {% if search_history %}
     <ul>
-    {% for keyword in search_history %}
-        <li>{{ keyword }}</a></li>
-    {% endfor %}
+      {% for query in search_history %}
+        <li><a href="{% url 'publisher_search' %}?q={{ query }}">{{ query }}</a></li>
+      {% endfor %}
     </ul>
+  {% else %}
+    <p>No search history.</p>
+  {% endif %}
 {% endblock %}

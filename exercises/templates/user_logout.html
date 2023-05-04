@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
-{% block title %}Home{% endblock %}
-
 {% block content %}
-{% if user.is_authenticated %}
-  Hi {{ user.username }}! Are you sure you want to logout?
-  <p><a href="{% url 'user_logout' %}">Log Out</a></p>
-{% endif %}
+  <h2>Logout</h2>
+  <p>Are you sure you want to logout?</p>
+  <form action="{% url 'user_logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes</button>
+    <a href="{% url 'home' %}" class="btn btn-secondary">No</a>
+  </form>
 {% endblock %}

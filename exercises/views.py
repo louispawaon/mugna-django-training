@@ -20,8 +20,10 @@ def is_admin(user):
 
 
 def user_logout(request):
+    if "search_history" in request.session:
+        del request.session["search_history"]
     logout(request)
-    return render(request, "user_logout.html")
+    return HttpResponseRedirect(reverse("home"))
 
 
 # Create your views here.
@@ -272,12 +274,9 @@ class SearchPublisherView(ListView):
     def get_queryset(self):
         query = self.request.GET.get("q")
         if query:
-            if not self.request.session.get("search_history"):
-                self.request.session["search_history"] = [query]
-            else:
-                self.request.session["search_history"] = self.request.session[
-                    "search_history"
-                ] + [query]
+            search_history = self.request.session.get("search_history", [])
+            search_history.append(query)
+            self.request.session["search_history"] = search_history
             return Publisher.objects.filter(name__icontains=query)
         else:
             return Publisher.objects.all()
@@ -291,12 +290,9 @@ class SearchAuthorView(ListView):
     def get_queryset(self):
         query = self.request.GET.get("q")
         if query:
-            if not self.request.session.get("search_history"):
-                self.request.session["search_history"] = [query]
-            else:
-                self.request.session["search_history"] = self.request.session[
-                    "search_history"
-                ] + [query]
+            search_history = self.request.session.get("search_history", [])
+            search_history.append(query)
+            self.request.session["search_history"] = search_history
             return Author.objects.filter(
                 Q(first_name__contains=query) | Q(last_name__contains=query)
             )
@@ -309,6 +305,7 @@ class CreateBookView(CreateView):
     form_class = BookForm
     template_name = "book_form.html"
 
+    @user_passes_test(is_admin)
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -323,6 +320,7 @@ class UpdateBookView(UpdateView):
     context_object_name = "books"
     template_name = "book_update.html"
 
+    @user_passes_test(is_admin)
     def form_valid(self, form):
         self.object = form.save()
         return HttpResponseRedirect(reverse("book_detail", args=[self.object.pk]))
@@ -332,6 +330,7 @@ class DeleteBookView(DeleteView):
     model = Book
     template_name = "book_delete.html"
 
+    @user_passes_test(is_admin)
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
@@ -343,6 +342,7 @@ class CreatePublisherView(CreateView):
     form_class = PublisherForm
     template_name = "publisher_form.html"
 
+    @user_passes_test(is_admin)
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -359,6 +359,7 @@ class UpdatePublisherView(UpdateView):
     context_object_name = "publishers"
     template_name = "publisher_update.html"
 
+    @user_passes_test(is_admin)
     def form_valid(self, form):
         self.object = form.save()
         return HttpResponseRedirect(reverse("publisher_detail", args=[self.object.pk]))
@@ -368,6 +369,7 @@ class DeletePublisherView(DeleteView):
     model = Publisher
     template_name = "publisher_delete.html"
 
+    @user_passes_test(is_admin)
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
