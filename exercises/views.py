@@ -3,7 +3,8 @@ from django.db.models.query import QuerySet
 from django.forms.models import BaseModelForm
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
+from django.contrib.sessions.backends.db import SessionStore
 from datetime import datetime
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -17,9 +18,11 @@ from exercises.forms import PublisherForm, BookForm, RegistrationForm, AuthorFor
 def is_admin(user):
     return user.is_superuser
 
+
 def user_logout(request):
     logout(request)
-    return render(request, 'user_logout.html')
+    return render(request, "user_logout.html")
+
 
 # Create your views here.
 def math_view(request, num1, num2, num3=None):
@@ -30,8 +33,8 @@ def math_view(request, num1, num2, num3=None):
             numbers.append(int(num3))
             total_sum = sum(numbers)
             difference = numbers[0] - numbers[1] - numbers[2]
-            product = numbers[0] * numbers[1] * numbers [2]
-            quotient = (numbers[0] / numbers[1])/numbers[2]
+            product = numbers[0] * numbers[1] * numbers[2]
+            quotient = (numbers[0] / numbers[1]) / numbers[2]
         else:
             total_sum = sum(numbers)
             difference = numbers[0] - numbers[1]
@@ -41,67 +44,76 @@ def math_view(request, num1, num2, num3=None):
         raise ValueError
 
     context = {
-        'numbers': numbers,
-        'total_sum': total_sum,
-        'difference': difference,
-        'product': product,
-        'quotient': quotient
+        "numbers": numbers,
+        "total_sum": total_sum,
+        "difference": difference,
+        "product": product,
+        "quotient": quotient,
     }
-    
-    return render(request, 'math.html', context)
+
+    return render(request, "math.html", context)
+
 
 def valid_date_view(request, YYYY, MM, DD):
     try:
-
         datetime(int(YYYY), int(MM), int(DD))
         response = "Valid date"
     except ValueError:
-
         response = "Invalid date"
 
-    context = {
-        'date': f"{YYYY}/{MM}/{DD}",
-        'validity': response
-    }
+    context = {"date": f"{YYYY}/{MM}/{DD}", "validity": response}
 
-    return render(request, 'valid_date.html', context)
+    return render(request, "valid_date.html", context)
+
 
 # Exercise 5
 @login_required
 def book_list(request):
     books = Book.objects.all()
-    return render(request, 'book_list.html', {'books': books})
+    return render(request, "book_list.html", {"books": books})
+
 
 @login_required
 def book_detail(request, book_id):
     book = get_object_or_404(Book, pk=book_id)
-    return render(request, 'book_detail.html', {'book': book})
+    return render(request, "book_detail.html", {"book": book})
+
 
 def author_list(request):
     authors = Author.objects.all()
-    return render(request, 'author_list.html', {'authors': authors})
+    return render(request, "author_list.html", {"authors": authors})
+
 
 @login_required
 def author_detail(request, author_id):
     author = get_object_or_404(Author, pk=author_id)
-    return render(request, 'author_detail.html', {'author': author})
+    return render(request, "author_detail.html", {"author": author})
+
 
 @login_required
 def classification_list(request):
     classifications = Classification.objects.all()
-    return render(request, 'classification_list.html', {'classifications': classifications})
+    return render(
+        request, "classification_list.html", {"classifications": classifications}
+    )
+
 
 def classification_detail(request, classification_id):
     classification = get_object_or_404(Classification, pk=classification_id)
-    return render(request, 'classification_detail.html', {'classification': classification})
+    return render(
+        request, "classification_detail.html", {"classification": classification}
+    )
+
 
 def publisher_list(request):
     publishers = Publisher.objects.all()
-    return render(request, 'publisher_list.html', {'publishers': publishers})
+    return render(request, "publisher_list.html", {"publishers": publishers})
+
 
 def publisher_detail(request, publisher_id):
     publisher = get_object_or_404(Publisher, pk=publisher_id)
-    return render(request, 'publisher_detail.html', {'publisher': publisher})
+    return render(request, "publisher_detail.html", {"publisher": publisher})
+
 
 # Exercise 6
 
@@ -138,7 +150,7 @@ def publisher_detail(request, publisher_id):
 #                 error = True
 #     return render(request, "publisher_search.html", {"error": error})
 
-    
+
 # @user_passes_test(is_admin)
 # def book_form(request):
 #     form = BookForm()
@@ -195,6 +207,7 @@ def publisher_detail(request, publisher_id):
 
 # Exercise 7
 
+
 def register(request):
     if request.method == "POST":
         form = RegistrationForm(request.POST)
@@ -206,13 +219,16 @@ def register(request):
             return render(request, "home.html")
     else:
         form = RegistrationForm()
-    
+
     return render(request, "register.html", {"form": form})
 
+
 def home(request):
-    return render( request, "home.html")
+    return render(request, "home.html")
+
 
 # Exercise 8
+
 
 def author_form(request):
     form = AuthorForm()
@@ -220,9 +236,12 @@ def author_form(request):
         form = AuthorForm(request.POST)
         if form.is_valid():
             form.save()
-            return render(request, "crud_results.html", {"results": Author.objects.all()})
+            return render(
+                request, "crud_results.html", {"results": Author.objects.all()}
+            )
     return render(request, "author_form.html", {"form": form, "obj": "Author"})
-        
+
+
 def author_update(request, pk=None):
     author = get_object_or_404(Author, pk=pk)
     form = AuthorForm(instance=author)
@@ -230,8 +249,11 @@ def author_update(request, pk=None):
         form = AuthorForm(request.POST, instance=author)
         if form.is_valid():
             form.save()
-            return render(request, "crud_results.html", {"results": Author.objects.all()})
+            return render(
+                request, "crud_results.html", {"results": Author.objects.all()}
+            )
     return render(request, "author_update.html", {"form": form, "obj": "Author"})
+
 
 def author_delete(request, pk=None):
     author = get_object_or_404(Author, pk=pk)
@@ -240,7 +262,8 @@ def author_delete(request, pk=None):
         return render(request, "crud_results.html", {"results": Author.objects.all()})
     return render(request, "author_delete.html", {"obj": "Author"})
 
-# Exercise 9 
+
+# Exercise 9
 class SearchPublisherView(ListView):
     model = Publisher
     context_object_name = "publishers"
@@ -249,10 +272,17 @@ class SearchPublisherView(ListView):
     def get_queryset(self):
         query = self.request.GET.get("q")
         if query:
+            if not self.request.session.get("search_history"):
+                self.request.session["search_history"] = [query]
+            else:
+                self.request.session["search_history"] = self.request.session[
+                    "search_history"
+                ] + [query]
             return Publisher.objects.filter(name__icontains=query)
         else:
             return Publisher.objects.all()
-        
+
+
 class SearchAuthorView(ListView):
     model = Author
     context_object_name = "authors"
@@ -261,21 +291,31 @@ class SearchAuthorView(ListView):
     def get_queryset(self):
         query = self.request.GET.get("q")
         if query:
-            return Author.objects.filter(Q(first_name__contains=query)|Q(last_name__contains=query))
+            if not self.request.session.get("search_history"):
+                self.request.session["search_history"] = [query]
+            else:
+                self.request.session["search_history"] = self.request.session[
+                    "search_history"
+                ] + [query]
+            return Author.objects.filter(
+                Q(first_name__contains=query) | Q(last_name__contains=query)
+            )
         else:
             return Author.objects.all()
+
 
 class CreateBookView(CreateView):
     model = Book
     form_class = BookForm
     template_name = "book_form.html"
-    
+
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse("book_list"))
         return render(request, "book_form.html", {"form": form, "obj": "Book"})
+
 
 class UpdateBookView(UpdateView):
     model = Book
@@ -285,28 +325,33 @@ class UpdateBookView(UpdateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        return HttpResponseRedirect(reverse('book_detail', args=[self.object.pk]))
-    
+        return HttpResponseRedirect(reverse("book_detail", args=[self.object.pk]))
+
+
 class DeleteBookView(DeleteView):
     model = Book
     template_name = "book_delete.html"
-    
+
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
-        return HttpResponseRedirect(reverse('book_list'))
+        return HttpResponseRedirect(reverse("book_list"))
+
 
 class CreatePublisherView(CreateView):
     model = Publisher
     form_class = PublisherForm
     template_name = "publisher_form.html"
-    
+
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse("publisher_list"))
-        return render(request, "publisher_form.html", {"form": form, "obj": "Publisher"})
+        return render(
+            request, "publisher_form.html", {"form": form, "obj": "Publisher"}
+        )
+
 
 class UpdatePublisherView(UpdateView):
     model = Publisher
@@ -316,19 +361,23 @@ class UpdatePublisherView(UpdateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        return HttpResponseRedirect(reverse('publisher_detail', args=[self.object.pk]))
+        return HttpResponseRedirect(reverse("publisher_detail", args=[self.object.pk]))
+
 
 class DeletePublisherView(DeleteView):
     model = Publisher
     template_name = "publisher_delete.html"
-    
+
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.delete()
-        return HttpResponseRedirect(reverse('publisher_list'))
+        return HttpResponseRedirect(reverse("publisher_list"))
 
 
-    
+class SearchHistory(ListView):
+    template_name = "search_history.html"
+    context_object_name = "search_history"
 
-
-    
+    def get_queryset(self):
+        if self.request.session.get("search_history"):
+            return self.request.session["search_history"]
