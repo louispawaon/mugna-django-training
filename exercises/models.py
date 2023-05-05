@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from datetime import timedelta
+from django.contrib.auth.models import User
 
 
 class Publisher(models.Model):
@@ -55,9 +56,12 @@ class Book(models.Model):
 
 
 class Author(models.Model):
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="author", null=True
+    )
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
-    email = models.EmailField(verbose_name="e-mail")
+    email = models.EmailField(verbose_name="e-mail", null=True)
 
     class Meta:
         verbose_name = _("Author")
