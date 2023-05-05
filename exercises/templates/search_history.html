@@ -2,10 +2,22 @@
 
 {% block content %}
   <h1>Search History</h1>
-  {% if search_history %}
+  <h2>Publisher Search History</h2>
+  {% if publisher_search_history %}
     <ul>
-      {% for query in search_history %}
+      {% for query in publisher_search_history %}
         <li><a href="{% url 'publisher_search' %}?q={{ query }}">{{ query }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No search history.</p>
+  {% endif %}
+
+  <h2>Author Search History</h2>
+  {% if author_search_history %}
+    <ul>
+      {% for query in author_search_history %}
+        <li><a href="{% url 'author_search' %}?q={{ query }}">{{ query }}</a></li>
       {% endfor %}
     </ul>
   {% else %}

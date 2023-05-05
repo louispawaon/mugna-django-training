@@ -43,7 +43,8 @@ from exercises.views import (
     CreatePublisherView,
     UpdatePublisherView,
     DeletePublisherView,
-    SearchHistory,
+    PublisherSearchHistory,
+    AuthorSearchHistory,
 )
 
 
@@ -96,5 +97,14 @@ urlpatterns = [
         DeletePublisherView.as_view(),
         name="publisher_delete",
     ),
-    path("search_history/", SearchHistory.as_view(), name="search_history"),
+    path(
+        "search_history/",
+        PublisherSearchHistory.as_view(),
+        name="search_history",
+    ),
+    path(
+        "search_history/",
+        AuthorSearchHistory.as_view(),
+        name="search_history",
+    ),
 ]
